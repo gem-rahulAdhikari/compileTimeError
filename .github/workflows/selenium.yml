@@ -1,0 +1,79 @@
+name: Run Selenium Tests
+on:
+  push:
+    branches:
+      - compileReporting # Change this to your default branch if different
+  pull_request:
+    branches:
+      - compileReporting # Change this to your default branch if different
+  
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Set up Chrome
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install google-chrome-stable -y
+        shell: bash
+
+      # - name: Set up ChromeDriver
+      #   run: |
+      #     # WebDriverManager handles driver setup, so you can skip this step
+      #   shell: bash
+
+      - name: Set up Maven
+        run: |
+          sudo apt-get install maven -y
+        shell: bash
+
+      - name: Build and run Selenium tests
+        run: |
+          cd seleniumExecution
+          mkdir test-output
+          FILE_NAME=reportName.properties
+          key="reportName"
+          prop_value=""
+          getProperty()
+          {
+            prop_key=$1
+            prop_value=`cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2`
+          }
+          getProperty ${key}
+          cd test-output
+          > ${prop_value}.txt
+          cd ..
+          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+        shell: bash
+          
+      - name: list files
+        if: always()
+        run: |
+          cd seleniumExecution
+          echo "ls selenium output"
+          ls
+          echo
+          echo "ls test-output"
+          cd test-output
+          ls
+          
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+          CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
+
+      - name: Check for compile errors and upload report
+        if: always()
+        run: |
+          # cd seleniumExecution/test-output
+          # sed -i '1,/COMPILATION ERROR/d' ${prop_value}.txt
+          mvn test -DsuiteXmlFile=testng.xml

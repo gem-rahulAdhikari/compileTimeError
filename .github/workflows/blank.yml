@@ -1,0 +1,32 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches:
+      - master # or the branch you want to trigger the workflow on
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set Up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15 # or the version you need
+
+      - name: Run Selenium Tests
+        run: |
+          # Set up ChromeDriver
+          wget https://chromedriver.storage.googleapis.com/<version>/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          chmod +x chromedriver
+          sudo mv chromedriver /usr/local/bin
+
+          # Compile and run Selenium Java script
+          javac SeleniumTest.java
+          java SeleniumTest
+        working-directory: ./path/to/your/java/project
