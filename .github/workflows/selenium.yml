@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - beta1 # Change this to your default branch if different
-  pull_request:
-    branches:
-      - compileReporting # Change this to your default branch if different
+    paths:
+      - 'seleniumExecution/src/main/java/App.java'
   
 jobs:
   run_tests:
