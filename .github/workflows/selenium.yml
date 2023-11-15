@@ -2,7 +2,7 @@ name: Run Selenium Tests
 on:
   push:
     branches:
-      - compileReporting # Change this to your default branch if different
+      - beta1 # Change this to your default branch if different
   pull_request:
     branches:
       - compileReporting # Change this to your default branch if different
