@@ -20,7 +20,7 @@ public final class compileError {
     String executionName;
     @Test
     public void upload() throws IOException {
-        System.out.println("inside upload")
+        System.out.println("inside upload");
         String directory="./seleniumExecution/test-output";
         String fileExtension=".html";
         Path dir= Paths.get(directory);
