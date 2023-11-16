@@ -25,6 +25,7 @@ public final class compileError {
         String fileExtension=".html";
         Path dir= Paths.get(directory);
         String fileFound=findFileInDirectory(dir,fileExtension);
+        System.out.println(fileFound);
         if (fileFound ==null) {
             String token = token();
             Properties reportNameReader = new Properties();
