@@ -1,39 +1,69 @@
-name: Run Selenium Tests
-on:
-  push:
-    branches:
+ name: Run Selenium Tests
+ on:
+   push:
+     branches:
       - beta1 # Change this to your default branch if different
-    paths:
-      - 'seleniumExecution/src/main/java/App.java'
+     paths:
+       - 'seleniumExecution/src/main/java/App.java'
   
-jobs:
-  run_tests:
-    runs-on: ubuntu-latest
-    env:
-      CHROME_BIN: /usr/bin/google-chrome
-      CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
-      
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+ jobs:
+   run_tests:
+     runs-on: ubuntu-latest
 
-      - name: Set up Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
+     steps:
+     - name: Checkout code
+       uses: actions/checkout@v2
 
-      - name: Set up Chrome
-        run: |
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install google-chrome-stable -y
-        shell: bash
+     - name: Cache Maven dependencies
+       uses: actions/cache@v2
+       with:
+         path: |
+           ~/.m2/repository
+         key: ${{ runner.os }}-maven-${{ hashFiles('**/*.xml') }}
+         restore-keys: |
+           ${{ runner.os }}-maven-
 
-      - name: Set up Maven
-        run: |
+     - name: Set up Java
+       uses: actions/setup-java@v1
+       with:
+         java-version: 11
+
+     - name: Download Chrome Stable Version
+       run: |
+        curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
+       shell: bash
+
+     - name: Unzip Chrome
+       run: |
+        unzip chrome-linux64.zip -d chrome-linux64
+        export CHROME_BIN=$(pwd)/chrome-linux64/chrome
+        echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
+       shell: bash
+
+     - name: Display Chrome Path
+       run: |
+        echo "Chrome binary path: $CHROME_BIN"
+       shell: bash
+
+     - name: Set up ChromeDriver
+       run: |
+        # WebDriverManager handles driver setup, so you can skip this step
+       shell: bash
+
+     - name: Set up Maven
+       run: |
+        if [ ! -e ~/.m2/repository ]; then
+          start_time=$(date +%s)
+          echo "Start Set up Maven: $(date)" >> execution_log.txt
           sudo apt-get install maven -y
-        shell: bash
+          end_time=$(date +%s)
+          execution_time=$((end_time - start_time))
+          echo "End Set up Maven: $(date)" >> execution_log.txt
+          echo "Execution time for Setup Maven: $execution_time seconds" >> execution_log.txt
+        else
+          echo "Maven is already installed (cached)."
+        fi
+       shell: bash
 
       - name: Build and run Selenium tests
         run: |
