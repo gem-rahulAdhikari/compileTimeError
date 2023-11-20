@@ -9,6 +9,10 @@ on:
 jobs:
   run_tests:
     runs-on: ubuntu-latest
+    env:
+      CHROME_BIN: /usr/bin/google-chrome
+      CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,11 +30,6 @@ jobs:
           sudo apt-get install google-chrome-stable -y
         shell: bash
 
-      # - name: Set up ChromeDriver
-      #   run: |
-      #     # WebDriverManager handles driver setup, so you can skip this step
-      #   shell: bash
-
       - name: Set up Maven
         run: |
           sudo apt-get install maven -y
@@ -42,7 +41,6 @@ jobs:
           mkdir test-output
           FILE_NAME=reportName.properties
           key="reportName"
-          prop_value=""
           getProperty()
           {
             prop_key=$1
@@ -66,13 +64,7 @@ jobs:
           cd test-output
           ls
           
-        env:
-          CHROME_BIN: /usr/bin/google-chrome
-          CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
-
       - name: Check for compile errors and upload report
         if: always()
         run: |
-          # cd seleniumExecution/test-output
-          # sed -i '1,/COMPILATION ERROR/d' ${prop_value}.txt
           mvn test -DsuiteXmlFile=testng.xml
