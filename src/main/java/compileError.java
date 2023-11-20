@@ -82,7 +82,8 @@ public final class compileError {
         System.out.println("in mongo upload function");
         String userId = executionName.split("_")[1];
         // String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
-     String url = " http://127.0.0.1:5000/editor?name=" + userId;
+     // String url = " http://127.0.0.1:5000/editor?name=" + userId;
+        String url=userId;
         String filePath = "./seleniumExecution/src/main/java/App.java";
         String classContent = readClassFileAsString(filePath);
         System.out.print("class content"+classContent);
