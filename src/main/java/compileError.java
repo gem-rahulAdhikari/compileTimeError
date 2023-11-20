@@ -81,7 +81,8 @@ public final class compileError {
         //uploading bucket report link and user-updated code to db
         System.out.println("in mongo upload function");
         String userId = executionName.split("_")[1];
-        String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
+        // String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
+     String url = " http://127.0.0.1:5000/editor?name=" + userId;
         String filePath = "./seleniumExecution/src/main/java/App.java";
         String classContent = readClassFileAsString(filePath);
         System.out.print("class content"+classContent);
@@ -94,7 +95,9 @@ public final class compileError {
             getConnection.setRequestMethod("GET");
 
             int getStatusCode = getConnection.getResponseCode();
+            System.out.println(getStatusCode);
             if (getStatusCode == HttpURLConnection.HTTP_OK) {
+                System.out.println("inside get request");
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(getConnection.getInputStream()))) {
                     StringBuilder response = new StringBuilder();
                     String line;
