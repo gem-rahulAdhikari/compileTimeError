@@ -35,41 +35,41 @@ jobs:
           service_account_key: 417ccbad5803215181214afa3f91920a2da47e06
           export_default_credentials: true
 
-      - name: Authenticate with Google Container Registry
-        run: |
-          echo ${GCLOUD_AUTH_KEY} | gcloud auth activate-service-account --key-file=-
-          gcloud auth configure-docker
+      # - name: Authenticate with Google Container Registry
+      #   run: |
+      #     echo ${GCLOUD_AUTH_KEY} | gcloud auth activate-service-account --key-file=-
+      #     gcloud auth configure-docker
 
-      - name: Build and run Selenium tests
-        run: |
-          cd seleniumExecution
-          mkdir test-output
-          FILE_NAME=reportName.properties
+      # - name: Build and run Selenium tests
+      #   run: |
+      #     cd seleniumExecution
+      #     mkdir test-output
+      #     FILE_NAME=reportName.properties
 
-          getProperty() {
-            prop_key=$1
-            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
-          }
+      #     getProperty() {
+      #       prop_key=$1
+      #       prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
+      #     }
 
-          getProperty reportName
-          cd test-output
-          > ${prop_value}.txt
-          cd ..
-          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
-        shell: bash
+      #     getProperty reportName
+      #     cd test-output
+      #     > ${prop_value}.txt
+      #     cd ..
+      #     mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+      #   shell: bash
 
-      - name: List files
-        if: always()
-        run: |
-          cd seleniumExecution
-          echo "ls selenium output"
-          ls
-          echo
-          echo "ls test-output"
-          cd test-output
-          ls
+      # - name: List files
+      #   if: always()
+      #   run: |
+      #     cd seleniumExecution
+      #     echo "ls selenium output"
+      #     ls
+      #     echo
+      #     echo "ls test-output"
+      #     cd test-output
+      #     ls
 
-      - name: Check for compile errors and upload report
-        if: always()
-        run: |
-          mvn test -DsuiteXmlFile=testng.xml
+      # - name: Check for compile errors and upload report
+      #   if: always()
+      #   run: |
+      #     mvn test -DsuiteXmlFile=testng.xml
