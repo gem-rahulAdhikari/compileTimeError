@@ -28,8 +28,9 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Configure Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v355.0.0
+        uses: google-github-actions/setup-gcloud@main
         with:
+          version: '343.0.0'
           project_id: g-code-editor
           service_account_key: 417ccbad5803215181214afa3f91920a2da47e06
           export_default_credentials: true
