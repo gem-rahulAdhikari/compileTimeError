@@ -27,9 +27,8 @@ jobs:
       - name: Set up JDK and Maven
         uses: actions/setup-java@v2
         with:
-         distribution: 'adopt'
-         java-version: '11'
-         maven-version: '3.6.3'
+          distribution: 'adopt'
+          java-version: '11'
 
       - name: Download Chrome Stable Version
         run: |
