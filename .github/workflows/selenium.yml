@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ghcr.io/gem-rahuladhikari/selenium-tests:latest
+      image: ghcr.io/gem-rahuladhikari/my-java-maven-chromedriver-image:latest
 
     steps:
       - name: Checkout code
