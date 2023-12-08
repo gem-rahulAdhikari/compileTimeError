@@ -15,9 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Pull Docker image
-      #   run: docker pull gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
-
       - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
@@ -27,56 +24,64 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Configure Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@main
+      - name: Set up JDK and Maven
+        uses: actions/setup-java@v2
         with:
-          version: '343.0.0'
-          project_id: g-code-editor
-          service_account_key: 417ccbad5803215181214afa3f91920a2da47e06
-          export_default_credentials: true
+         distribution: 'adopt'
+         java-version: '11'
 
-      - name: Configure Docker to use GCR  
-        run: |           
-          gcloud auth configure-docker gcr.io
+      - name: Download Chrome Stable Version
+        run: |
+          curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
+        shell: bash
 
-      - name: Pull Docker image
-        run: docker pull gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest   
+      - name: Unzip Chrome
+        run: |
+          unzip chrome-linux64.zip -d chrome-linux64
+          export CHROME_BIN=$(pwd)/chrome-linux64/chrome
+          echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
+        shell: bash
 
-      # - name: Authenticate with Google Container Registry
-      #   run: |
-      #     echo ${GCLOUD_AUTH_KEY} | gcloud auth activate-service-account --key-file=-
-      #     gcloud auth configure-docker
+      - name: Display Chrome Path
+        run: |
+          echo "Chrome binary path: $CHROME_BIN"
+        shell: bash
 
-      # - name: Build and run Selenium tests
-      #   run: |
-      #     cd seleniumExecution
-      #     mkdir test-output
-      #     FILE_NAME=reportName.properties
+      - name: Set up ChromeDriver
+        run: |
+          # WebDriverManager handles driver setup, so you can skip this step
+        shell: bash
 
-      #     getProperty() {
-      #       prop_key=$1
-      #       prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
-      #     }
+      - name: Build and run Selenium tests
+        run: |
+          cd seleniumExecution
+          mkdir test-output
+          FILE_NAME=reportName.properties
 
-      #     getProperty reportName
-      #     cd test-output
-      #     > ${prop_value}.txt
-      #     cd ..
-      #     mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
-      #   shell: bash
+          getProperty() {
+            prop_key=$1
+            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
+          }
 
-      # - name: List files
-      #   if: always()
-      #   run: |
-      #     cd seleniumExecution
-      #     echo "ls selenium output"
-      #     ls
-      #     echo
-      #     echo "ls test-output"
-      #     cd test-output
-      #     ls
+          getProperty reportName
+          cd test-output
+          > ${prop_value}.txt
+          cd ..
+          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+        shell: bash
 
-      # - name: Check for compile errors and upload report
-      #   if: always()
-      #   run: |
-      #     mvn test -DsuiteXmlFile=testng.xml
+      - name: list files
+        if: always()
+        run: |
+          cd seleniumExecution
+          echo "ls selenium output"
+          ls
+          echo
+          echo "ls test-output"
+          cd test-output
+          ls
+
+      - name: Check for compile errors and upload report
+        if: always()
+        run: |
+          mvn test -DsuiteXmlFile=testng.xml
