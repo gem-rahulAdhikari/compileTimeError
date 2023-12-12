@@ -15,18 +15,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # - name: Set up Google Cloud SDK
-    #   uses: google-github-actions/setup-gcloud@master
-    #   with:
-    #     service_account_key: 417ccbad5803215181214afa3f91920a2da47e06
-    #     project_id: g-code-editor
-
-    # - name: Authenticate with GCR
-    #   run: |
-    #     echo 417ccbad5803215181214afa3f91920a2da47e06 > /tmp/gcr-key.json
-    #     gcloud auth activate-service-account --key-file=/tmp/gcr-key.json
-    #     gcloud --quiet auth configure-docker
-
     - name: Pull GCR Docker Image
       run: docker pull gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
 
