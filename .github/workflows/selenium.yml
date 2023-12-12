@@ -28,7 +28,7 @@ jobs:
     #     gcloud --quiet auth configure-docker
 
     - name: Pull GCR Docker Image
-      run: docker pull gcr.io/g-code-editor/gcr.io/g-code-editor/my-java-maven-chromedriver-image
+      run: docker pull gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
 
     - name: Use the Docker Image
       run: |
