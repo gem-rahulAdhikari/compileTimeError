@@ -32,5 +32,5 @@ jobs:
 
     - name: Use the Docker Image
       run: |
-        docker run gcr.io/g-code-editor/gcr.io/g-code-editor/my-java-maven-chromedriver-image
+        docker run gcr.io/g-code-editor/gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
       #     mvn test -DsuiteXmlFile=testng.xml
