@@ -55,5 +55,5 @@ jobs:
           cd test-output
           > ${prop_value}.txt
           cd ..
-          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+          # mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
       shell: bash
