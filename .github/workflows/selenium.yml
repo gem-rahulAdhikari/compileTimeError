@@ -49,6 +49,12 @@ jobs:
       run: |
         # WebDriverManager handles driver setup, so you can skip this step
       shell: bash
+
+    - name: execute
+      run: |
+        cd seleniumExecution
+        mvn test -DsuiteXmlFile=testng.xml
+        
     - name: list files
       if: always()
       run: |
