@@ -18,10 +18,6 @@ jobs:
     - name: Pull GCR Docker Image
       run: docker pull gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
 
-    - name: Use the Docker Image
-      run: |
-        docker run gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
-        
     - name: Download Chrome Stable Version
       run: |
         curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
@@ -43,6 +39,7 @@ jobs:
       run: |
         # WebDriverManager handles driver setup, so you can skip this step
       shell: bash
+
     - name: Build and run Selenium tests
       run: |
           cd seleniumExecution
@@ -60,19 +57,3 @@ jobs:
           cd ..
           mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
       shell: bash
-
-    - name: list files
-      if: always()
-      run: |
-          cd seleniumExecution
-          echo "ls selenium output"
-          ls
-          echo
-          echo "ls test-output"
-          cd test-output
-          ls
-
-    - name: Check for compile errors and upload report
-      if: always()
-      run: |
-          mvn test -DsuiteXmlFile=testng.xml   
