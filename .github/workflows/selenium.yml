@@ -21,4 +21,58 @@ jobs:
     - name: Use the Docker Image
       run: |
         docker run gcr.io/g-code-editor/my-java-maven-chromedriver-image:latest
-      #     mvn test -DsuiteXmlFile=testng.xml
+        
+    - name: Download Chrome Stable Version
+      run: |
+        curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
+      shell: bash
+
+    - name: Unzip Chrome
+      run: |
+        unzip chrome-linux64.zip -d chrome-linux64
+        export CHROME_BIN=$(pwd)/chrome-linux64/chrome
+        echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Display Chrome Path
+      run: |
+        echo "Chrome binary path: $CHROME_BIN"
+      shell: bash
+
+    - name: Set up ChromeDriver
+      run: |
+        # WebDriverManager handles driver setup, so you can skip this step
+      shell: bash
+    - name: Build and run Selenium tests
+      run: |
+          cd seleniumExecution
+          mkdir test-output
+          FILE_NAME=reportName.properties
+
+          getProperty() {
+            prop_key=$1
+            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
+          }
+
+          getProperty reportName
+          cd test-output
+          > ${prop_value}.txt
+          cd ..
+          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+      shell: bash
+
+    - name: list files
+      if: always()
+      run: |
+          cd seleniumExecution
+          echo "ls selenium output"
+          ls
+          echo
+          echo "ls test-output"
+          cd test-output
+          ls
+
+    - name: Check for compile errors and upload report
+      if: always()
+      run: |
+          mvn test -DsuiteXmlFile=testng.xml   
