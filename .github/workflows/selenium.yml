@@ -35,25 +35,18 @@ jobs:
         echo "Chrome binary path: $CHROME_BIN"
       shell: bash
 
+    - name: Check ChromeDriver Setup
+      run: |
+        if [[ -n "$CHROME_BIN" ]]; then
+          echo "ChromeDriver is set up in the image."
+        else
+          echo "ChromeDriver is not set up in the image."
+          exit 1  # Exit with an error code if ChromeDriver is not set up
+        fi
+      shell: bash
+
     - name: Set up ChromeDriver
       run: |
         # WebDriverManager handles driver setup, so you can skip this step
       shell: bash
 
-    - name: Build and run Selenium tests
-      run: |
-          cd seleniumExecution
-          mkdir test-output
-          FILE_NAME=reportName.properties
-
-          getProperty() {
-            prop_key=$1
-            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
-          }
-
-          getProperty reportName
-          cd test-output
-          > ${prop_value}.txt
-          cd ..
-          # mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
-      shell: bash
