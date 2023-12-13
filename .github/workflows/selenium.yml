@@ -81,6 +81,7 @@ jobs:
           cd test-output
           > ${prop_value}.txt
           cd ..
+          mvn clean install
           mvn test -DsuiteXmlFile=testng.xml
         shell: bash
 
