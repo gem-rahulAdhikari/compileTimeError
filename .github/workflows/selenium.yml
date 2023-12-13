@@ -31,7 +31,7 @@ jobs:
 
       - name: Download Chrome Stable Version
         run: |
-          curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chrome-linux64.zip
+          curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.71/linux64/chrome-linux64.zip
         shell: bash
 
       - name: Unzip Chrome
