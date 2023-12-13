@@ -60,7 +60,9 @@ public abstract class driverConfig extends WebdriverEventListener {
     @BeforeMethod
     public void setWebDriver() {
         //Chromedriver setup
-        WebDriverManager.chromedriver().setup();
+        // WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().driverVersion("119.0.0").setup();
+        
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("start-maximized");
