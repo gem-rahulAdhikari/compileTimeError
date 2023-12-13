@@ -82,7 +82,7 @@ jobs:
           > ${prop_value}.txt
           cd ..
           mvn clean install
-          mvn test -DsuiteXmlFile=testng.xml
+          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
         shell: bash
 
       - name: list files
