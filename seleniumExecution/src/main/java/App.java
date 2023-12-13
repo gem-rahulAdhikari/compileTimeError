@@ -25,8 +25,7 @@ driver.get("https://www.google.com/");
      String fetchedTitle=title.getText();
     
     System.out.println(fetchedTitle+" start2");
-    
-    
+      
     if("Selenium".equals(fetchedTitle))
      {
          extentTest.log(Status.PASS,"text matched successfully.",captureScreenshot());
