@@ -44,12 +44,7 @@ jobs:
           exit 1  # Exit with an error code if ChromeDriver is not set up
         fi
       shell: bash
-
-    - name: Set up ChromeDriver
-      run: |
-        # WebDriverManager handles driver setup, so you can skip this step
-      shell: bash
-
+      
     - name: execute
       run: |
         cd seleniumExecution
