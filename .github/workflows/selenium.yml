@@ -81,7 +81,6 @@ jobs:
           cd test-output
           > ${prop_value}.txt
           cd ..
-          mvn clean install
           mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
         shell: bash
 
@@ -95,8 +94,3 @@ jobs:
           echo "ls test-output"
           cd test-output
           ls
-
-      # - name: Check for compile errors and upload report
-      #   if: always()
-      #   run: |
-      #     mvn test -DsuiteXmlFile=testng.xml
