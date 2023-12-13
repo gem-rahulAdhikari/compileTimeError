@@ -13,7 +13,6 @@ import java.time.*;
 
 public class App extends driverConfig{
     static String reportName="Report_4a5d2e5676cf34734a533fe17b61b38dba979b836a374798302934e7b32ad777_0";
-
     @Test
 
 public void demo(){
