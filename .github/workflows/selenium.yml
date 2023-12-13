@@ -53,6 +53,7 @@ jobs:
     - name: execute
       run: |
         cd seleniumExecution
+        mvn clean install
         mvn test -DsuiteXmlFile=testng.xml
         
     - name: list files
