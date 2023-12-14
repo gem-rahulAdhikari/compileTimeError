@@ -21,6 +21,23 @@ jobs:
           distribution: 'adopt'
           java-version: '11'  # Specify the Java version you need
 
+      - name: Download Chrome Stable Version
+        run: |
+          curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.71/linux64/chrome-linux64.zip
+        shell: bash
+
+      - name: Unzip Chrome
+        run: |
+          unzip chrome-linux64.zip -d chrome-linux64
+          export CHROME_BIN=$(pwd)/chrome-linux64/chrome
+          echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Display Chrome Path
+        run: |
+          echo "Chrome binary path: $CHROME_BIN"
+        shell: bash     
+
       - name: Build with Maven
         run: mvn clean install -B
 
