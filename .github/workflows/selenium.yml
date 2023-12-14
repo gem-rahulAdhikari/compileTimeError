@@ -55,3 +55,13 @@ jobs:
           cd ..
           mvn test -DsuiteXmlFile=testng.xml
         shell: bash
+      - name: list files
+        if: always()
+        run: |
+          cd seleniumExecution
+          echo "ls selenium output"
+          ls
+          echo
+          echo "ls test-output"
+          cd test-output
+          ls    
