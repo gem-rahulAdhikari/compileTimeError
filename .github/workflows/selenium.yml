@@ -38,8 +38,20 @@ jobs:
           echo "Chrome binary path: $CHROME_BIN"
         shell: bash     
 
-      - name: Build with Maven
-        run: mvn clean install -B
+      - name: Build and run Selenium tests
+        run: |
+          cd seleniumExecution
+          mkdir test-output
+          FILE_NAME=reportName.properties
 
-      - name: Run Selenium Tests
-        run: mvn test
+          getProperty() {
+            prop_key=$1
+            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
+          }
+
+          getProperty reportName
+          cd test-output
+          > ${prop_value}.txt
+          cd ..
+          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+        shell: bash
