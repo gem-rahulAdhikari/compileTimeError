@@ -42,16 +42,16 @@ jobs:
         run: |
           cd seleniumExecution
           mkdir test-output
-          FILE_NAME=reportName.properties
+          # FILE_NAME=reportName.properties
 
-          getProperty() {
-            prop_key=$1
-            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
-          }
+          # getProperty() {
+          #   prop_key=$1
+          #   prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
+          # }
 
-          getProperty reportName
-          cd test-output
-          > ${prop_value}.txt
+          # getProperty reportName
+          # cd test-output
+          # > ${prop_value}.txt
           cd ..
-          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+          mvn test -DsuiteXmlFile=testng.xml >> 
         shell: bash
