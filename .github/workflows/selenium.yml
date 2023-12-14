@@ -53,7 +53,7 @@ jobs:
           cd test-output
           > ${prop_value}.txt
           cd ..
-          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt
+          mvn test -DsuiteXmlFile=testng.xml 
         shell: bash
       - name: list files
         if: always()
