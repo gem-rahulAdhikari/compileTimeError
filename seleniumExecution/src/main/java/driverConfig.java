@@ -103,6 +103,7 @@ public abstract class driverConfig extends WebdriverEventListener {
        try {
            System.out.println("in upload function");
            String filePath = "./test-output/"+executionName+".html";
+           System.out.println(executionName);
            System.out.println(filePath);
            File file=new File(filePath);
            RestAssured.baseURI = "https://storage.googleapis.com/upload/storage/v1/b/"+bucketName+"/o";
