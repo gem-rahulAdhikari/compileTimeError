@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Selenium Tests in Headless Mode
         run: |
-          cd your-selenium-project-directory
+          cd seleniumExecution
           mvn clean test -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dchromeoptions.args=--headless
 
       - name: Stop Selenium Server
