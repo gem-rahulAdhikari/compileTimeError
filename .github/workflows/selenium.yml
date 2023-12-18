@@ -21,27 +21,14 @@ jobs:
           distribution: 'adopt'
           java-version: '11'  # Specify the Java version you need
 
-      - name: Download Chrome Stable Version
+      - name: Start Selenium server
         run: |
-          curl -o chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.71/linux64/chrome-linux64.zip
-        shell: bash
-
-      - name: Unzip Chrome
-        run: |
-          unzip chrome-linux64.zip -d chrome-linux64
-          export CHROME_BIN=$(pwd)/chrome-linux64/chrome
-          echo "export CHROME_BIN=$CHROME_BIN" >> $GITHUB_ENV
-        shell: bash
-
-      - name: Display Chrome Path
-        run: |
-          echo "Chrome binary path: $CHROME_BIN"
-        shell: bash     
+          docker run -d --rm -p 4444:4444 --name selenium-chrome selenium/standalone-chrome:latest
 
       - name: Build and run Selenium tests
         run: |
           cd seleniumExecution
-          mkdir test-output
+          mkdir -p test-output
           FILE_NAME=reportName.properties
 
           getProperty() {
@@ -54,8 +41,8 @@ jobs:
           > ${prop_value}.txt
           cd ..
           mvn test -DsuiteXmlFile=testng.xml 
-        shell: bash
-      - name: list files
+
+      - name: List Files
         if: always()
         run: |
           cd seleniumExecution
@@ -64,4 +51,7 @@ jobs:
           echo
           echo "ls test-output"
           cd test-output
-          ls    
+          ls
+
+      - name: Stop Selenium server
+        run: docker stop selenium-chrome
