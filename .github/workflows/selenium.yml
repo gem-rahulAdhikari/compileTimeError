@@ -15,12 +15,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-
       - name: Start Selenium Server
         run: |
           docker run -d -p 4444:4444 --name selenium-chrome selenium/standalone-chrome:latest
@@ -31,4 +25,4 @@ jobs:
           mvn clean test -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dchromeoptions.args=--headless
 
       - name: Stop Selenium Server
-        run: docker stop selenium-chrome
+        run: docker stop selenium-chrom
