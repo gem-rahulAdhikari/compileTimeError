@@ -19,39 +19,16 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '11'  # Specify the Java version you need
+          java-version: '11'
 
-      - name: Start Selenium server
+      - name: Start Selenium Server
         run: |
-          docker run -d --rm -p 4444:4444 --name selenium-chrome selenium/standalone-chrome:latest
+          docker run -d -p 4444:4444 --name selenium-chrome selenium/standalone-chrome:latest
 
-      - name: Build and run Selenium tests
+      - name: Run Selenium Tests in Headless Mode
         run: |
-          cd seleniumExecution
-          mkdir -p test-output
-          FILE_NAME=reportName.properties
+          cd your-selenium-project-directory
+          mvn clean test -Dwebdriver.chrome.driver=/usr/bin/chromedriver -Dchromeoptions.args=--headless
 
-          getProperty() {
-            prop_key=$1
-            prop_value=$(cat ${FILE_NAME} | grep ${prop_key} | cut -d'=' -f2)
-          }
-
-          getProperty reportName
-          cd test-output
-          > ${prop_value}.txt
-          cd ..
-          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt 
-
-      - name: List Files
-        if: always()
-        run: |
-          cd seleniumExecution
-          echo "ls selenium output"
-          ls
-          echo
-          echo "ls test-output"
-          cd test-output
-          ls
-
-      - name: Stop Selenium server
+      - name: Stop Selenium Server
         run: docker stop selenium-chrome
