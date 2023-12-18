@@ -16,24 +16,34 @@ public class App extends driverConfig{
 
     @Test
 public void demo(){
-driver.get("https://www.google.com/");
-     WebElement searchInput = driver.findElement(By.xpath("//textarea"));
-    searchInput.sendKeys("selenium");
-    searchInput.sendKeys(Keys.RETURN);
-     WebElement title = driver.findElement(By.xpath("(//h3[text()='Selenium'])[1]")); 
-     String fetchedTitle=title.getText();
-    System.out.println(fetchedTitle+" start2");
-    System.out.println(fetchedTitle+" start2");  
-       if("Selenium".equals(fetchedTitle))
-     {
-         extentTest.log(Status.PASS,"text matched successfully.",captureScreenshot());
-     }
-    else
-     {
-         extentTest.log(Status.FAIL,"Failed to match text.",captureScreenshot());
-     }
+// driver.get("https://www.google.com/");
+    //  WebElement searchInput = driver.findElement(By.xpath("//textarea"));
+    // searchInput.sendKeys("selenium");
+    // searchInput.sendKeys(Keys.RETURN);
+    //  WebElement title = driver.findElement(By.xpath("(//h3[text()='Selenium'])[1]")); 
+    //  String fetchedTitle=title.getText();
+    // System.out.println(fetchedTitle+" start2");
+    // System.out.println(fetchedTitle+" start2");  
+    //    if("Selenium".equals(fetchedTitle))
+    //  {
+    //      extentTest.log(Status.PASS,"text matched successfully.",captureScreenshot());
+    //  }
+    // else
+    //  {
+    //      extentTest.log(Status.FAIL,"Failed to match text.",captureScreenshot());
+    //  }
  
-     extentTest.log(Status.PASS,driver.getCurrentUrl(),captureScreenshot());
+    //  extentTest.log(Status.PASS,driver.getCurrentUrl(),captureScreenshot());
+     RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
+
+        // Make a GET request to the "/posts/1" endpoint
+        Response response = RestAssured.get("/posts/1");
+
+        // Print the response body
+        System.out.println("Response Body: " + response.getBody().asString());
+
+        // Verify the status code is 200 (OK)
+        response.then().statusCode(200);
  
 }
 
