@@ -40,7 +40,7 @@ jobs:
           cd test-output
           > ${prop_value}.txt
           cd ..
-          mvn test -DsuiteXmlFile=testng.xml 
+          mvn test -DsuiteXmlFile=testng.xml >> ./test-output/${prop_value}.txt 
 
       - name: List Files
         if: always()
