@@ -95,3 +95,7 @@ jobs:
           echo "ls test-output"
           cd test-output
           ls
+      - name: Check for compile errors and upload report
+        if: always()
+        run: |
+          mvn test -DsuiteXmlFile=testng.xml
