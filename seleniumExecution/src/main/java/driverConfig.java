@@ -87,30 +87,31 @@ public abstract class driverConfig extends WebdriverEventListener {
 
     @AfterSuite
     public void reportMover() throws IOException {
+        System.out.println("in afterSuite");
         //Uploading report to gcloud bucket storage
         System.out.println("Execution complete, report manipulation started");
-        String serviceAccountKeyPath = "./g-code-editor-417ccbad5803.json";
+        String serviceAccountKeyPath = "./gemcode-editor-03253b3eac2d.json";
         GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
                 .createScoped("https://www.googleapis.com/auth/cloud-platform");
         AccessToken accessToken = credentials.refreshAccessToken();
         String token = accessToken.getTokenValue();
         System.out.println("Access Token: " + token);
-       uploadReport(token);
+        uploadReport(token);
         String reportName = "https://storage.googleapis.com/"+bucketName+"/" + executionName + ".html";
         mongoTransfer(reportName);
     }
 
-   public void uploadReport(String token) {
-       try {
-           System.out.println("in upload function");
-           String filePath = "./test-output/"+executionName+".html";
-           File file=new File(filePath);
-           RestAssured.baseURI = "https://storage.googleapis.com/upload/storage/v1/b/"+bucketName+"/o";
-           RestAssured.given().header("Authorization", "Bearer " + token).queryParam("uploadType","media").queryParam("name",executionName+".html").contentType("text/html").body(file).post().then().statusCode(200);
-       } catch (Exception e) {
-           throw new RuntimeException(e);
-       }
-   }
+ public void uploadReport(String token) {
+        try {
+            System.out.println("in upload function");
+            String filePath = "./test-output/"+executionName+".html";
+            File file=new File(filePath);
+            RestAssured.baseURI = "https://storage.googleapis.com/upload/storage/v1/b/"+bucketName+"/o";
+            RestAssured.given().header("Authorization", "Bearer " + token).queryParam("uploadType","media").queryParam("name",executionName+".html").contentType("text/html").body(file).post().then().statusCode(200);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void mongoTransfer(String reportName) throws IOException {
         //uploading bucket report link and user-updated code to db
