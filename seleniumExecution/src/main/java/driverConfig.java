@@ -90,7 +90,7 @@ public abstract class driverConfig extends WebdriverEventListener {
         System.out.println("in afterSuite");
         //Uploading report to gcloud bucket storage
         System.out.println("Execution complete, report manipulation started");
-        String serviceAccountKeyPath = "./g-code-editor-417ccbad5803.json";
+        String serviceAccountKeyPath = "./gemcode-editor-03253b3eac2d.json";
         GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
                 .createScoped("https://www.googleapis.com/auth/cloud-platform");
         AccessToken accessToken = credentials.refreshAccessToken();
