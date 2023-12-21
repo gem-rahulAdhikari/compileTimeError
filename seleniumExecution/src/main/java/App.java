@@ -21,6 +21,7 @@ public class App extends driverConfig{
 
 public void demo(){
 driver.get("https://www.google.com/");
+    
      WebElement searchInput = driver.findElement(By.xpath("//textarea"));
     searchInput.sendKeys("selenium");
     searchInput.sendKeys(Keys.RETURN);
