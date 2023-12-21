@@ -16,7 +16,7 @@ import java.util.Properties;
 
 public final class compileError {
 
-    String bucketName="selenium-reporting";
+    String bucketName="selenium-reportdata";
     String executionName;
     @Test
     public void upload() throws IOException {
@@ -36,12 +36,12 @@ public final class compileError {
         RestAssured.baseURI = "https://storage.googleapis.com/upload/storage/v1/b/"+bucketName+"/o";
         RestAssured.given().header("Authorization", "Bearer " + token).queryParam("uploadType","media").queryParam("name",executionName+".txt").contentType("text/html").body(file).post().then().statusCode(200);
         String reportName="https://storage.googleapis.com/"+bucketName+"/" + executionName + ".txt";
-            mongoTransfer(reportName);
+            // mongoTransfer(reportName);
         }
     }
     public String token() throws IOException {
         String serviceAccountKeyPath = "./g-code-editor-417ccbad5803.json";
-        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
+       GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
                 .createScoped("https://www.googleapis.com/auth/cloud-platform");
         AccessToken accessToken = credentials.refreshAccessToken();
         String token = accessToken.getTokenValue();
