@@ -26,7 +26,7 @@ import java.util.Properties;
 public abstract class driverConfig extends WebdriverEventListener {
     public static WebDriver driver;
     static ThreadLocal<WebDriver> wDriver = new ThreadLocal<WebDriver>();
-    public String bucketName = "selenium-reporting";
+    public String bucketName = "selenium-reportdata";
     String executionName;
 
     public static String readClassFileAsString(String filePath) throws IOException {
