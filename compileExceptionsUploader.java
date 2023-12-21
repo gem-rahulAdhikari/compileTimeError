@@ -29,6 +29,7 @@ public class compileExceptionsUploader {
         }
     }
     public static String findFileInDirectory(Path directory, String fileExtension) throws IOException {
+        System.out.println("file directory");
         final String[] foundFile = {null};
 
         Files.walkFileTree(directory, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new java.nio.file.SimpleFileVisitor<Path>() {
