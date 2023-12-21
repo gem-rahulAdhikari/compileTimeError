@@ -36,6 +36,7 @@ public void demo(){
     //  }
  
     //  extentTest.log(Status.PASS,driver.getCurrentUrl(),captureScreenshot());
+    
      RestAssured.baseURI = "https://jsonplaceholder.typicode.com";
 
         // Make a GET request to the "/posts/1" endpoint
