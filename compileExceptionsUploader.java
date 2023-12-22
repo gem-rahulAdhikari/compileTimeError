@@ -62,7 +62,8 @@ public class compileExceptionsUploader {
         //uploading bucket report link and user-updated code to db
         System.out.println("in mongo upload function");
         String userId = executionName.split("_")[1];
-        String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
+        // String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
+        String url="1702880311";
         String javaPath = "./src/main/java/App.java";
         String compileTxtPath="./test-output/" + executionName + ".txt";
         String classContent = readClassFileAsString(javaPath);
