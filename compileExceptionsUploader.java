@@ -29,9 +29,11 @@ public class compileExceptionsUploader {
         }
     }
     public static String findFileInDirectory(Path directory, String fileExtension) throws IOException {
-        final String[] foundFile = {null};
+        System.out.println("file directory");
+    final String[] foundFile = {null};
 
-        Files.walkFileTree(directory, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new java.nio.file.SimpleFileVisitor<Path>() {
+    try {
+        Files.walkFileTree(directory, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 if (file.getFileName().toString().endsWith(fileExtension)) {
@@ -41,8 +43,12 @@ public class compileExceptionsUploader {
                 return FileVisitResult.CONTINUE;
             }
         });
+    } catch (IOException e) {
+        // Handle the IOException (e.g., print an error message)
+        e.printStackTrace();
+    }
 
-        return foundFile[0];
+    return foundFile[0];
     }
     public static String readClassFileAsString(String filePath) throws IOException {
         //Reading user-updated code
