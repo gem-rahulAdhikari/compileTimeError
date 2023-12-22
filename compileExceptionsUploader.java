@@ -14,7 +14,7 @@ public class compileExceptionsUploader {
     static String executionName;
 
     public static void main(String[] args)throws IOException {
-        String directory = "./test-output";
+        String directory = "./seleniumExecution/test-output";
         String fileExtension = ".html";
         Path dir = Paths.get(directory);
         String fileFound = findFileInDirectory(dir, fileExtension);
