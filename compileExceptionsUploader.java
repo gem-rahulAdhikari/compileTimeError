@@ -22,11 +22,15 @@ public class compileExceptionsUploader {
         System.out.println("is it is null");
         if (fileFound == null) {
             System.out.println("null folder");
+             String token = token();
             Properties reportNameReader = new Properties();
             reportNameReader.load(new FileInputStream("./reportName.properties"));
-            executionName = reportNameReader.getProperty("reportName");
-            String reportName = "https://storage.googleapis.com/" + bucketName + "/" + executionName + ".txt";
-            mongoTransfer();
+            executionName=reportNameReader.getProperty("reportName");
+            String filePath = "./seleniumExecution/test-output/" + executionName+".txt";
+            File file = new File(filePath);
+        RestAssured.baseURI = "https://storage.googleapis.com/upload/storage/v1/b/"+bucketName+"/o";
+        RestAssured.given().header("Authorization", "Bearer " + token).queryParam("uploadType","media").queryParam("name",executionName+".txt").contentType("text/html").body(file).post().then().statusCode(200);
+        String reportName="https://storage.googleapis.com/"+bucketName+"/" + executionName + ".txt";
         }
     }
     public static String findFileInDirectory(Path directory, String fileExtension) throws IOException {
@@ -64,7 +68,15 @@ public class compileExceptionsUploader {
 
         return content.toString();
     }
-
+  public String token() throws IOException {
+        String serviceAccountKeyPath = "./g-code-editor-417ccbad5803.json";
+       GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
+                .createScoped("https://www.googleapis.com/auth/cloud-platform");
+        AccessToken accessToken = credentials.refreshAccessToken();
+        String token = accessToken.getTokenValue();
+        System.out.println("Access Token: " + token);
+        return token;
+    }
     public static void mongoTransfer() throws IOException {
         //uploading bucket report link and user-updated code to db
         System.out.println("in mongo upload function");
