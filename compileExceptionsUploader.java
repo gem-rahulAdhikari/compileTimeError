@@ -91,6 +91,7 @@ public class compileExceptionsUploader {
                     JSONArray dataArray = new JSONArray(responseData); // Assuming the response is a JSON array
 
                     String currentUrl = url; // Replace with the URL you want to compare
+                    System.out.println(currentUrl);
 
                     boolean foundMatch = false;
                     for (int i = 0; i < dataArray.length(); i++) {
