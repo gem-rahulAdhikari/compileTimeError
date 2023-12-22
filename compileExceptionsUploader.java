@@ -21,6 +21,7 @@ public class compileExceptionsUploader {
         System.out.println(fileFound);
         System.out.println("is it is null");
         if (fileFound == null) {
+            System.out.println("null folder");
             Properties reportNameReader = new Properties();
             reportNameReader.load(new FileInputStream("./reportName.properties"));
             executionName = reportNameReader.getProperty("reportName");
