@@ -98,7 +98,7 @@ public abstract class driverConfig extends WebdriverEventListener {
         System.out.println("Access Token: " + token);
         uploadReport(token);
         String reportName = "https://storage.googleapis.com/"+bucketName+"/" + executionName + ".html";
-        // mongoTransfer(reportName);
+        mongoTransfer(reportName);
     }
 
  public void uploadReport(String token) {
