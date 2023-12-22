@@ -68,7 +68,7 @@ public class compileExceptionsUploader {
 
         return content.toString();
     }
-  public String token() throws IOException {
+  public static String token() throws IOException {
         String serviceAccountKeyPath = "./g-code-editor-417ccbad5803.json";
        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
                 .createScoped("https://www.googleapis.com/auth/cloud-platform");
