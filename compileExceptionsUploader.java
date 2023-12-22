@@ -1,10 +1,5 @@
-import com.google.auth.oauth2.AccessToken;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
-import io.restassured.RestAssured;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.annotations.Test;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -26,24 +21,17 @@ public class compileExceptionsUploader {
         System.out.println(fileFound);
         System.out.println("is it is null");
         if (fileFound == null) {
-            System.out.println("null folder");
-             String token = token();
             Properties reportNameReader = new Properties();
             reportNameReader.load(new FileInputStream("./reportName.properties"));
-            executionName=reportNameReader.getProperty("reportName");
-            String filePath = "./seleniumExecution/test-output/" + executionName+".txt";
-            File file = new File(filePath);
-        RestAssured.baseURI = "https://storage.googleapis.com/upload/storage/v1/b/"+bucketName+"/o";
-        RestAssured.given().header("Authorization", "Bearer " + token).queryParam("uploadType","media").queryParam("name",executionName+".txt").contentType("text/html").body(file).post().then().statusCode(200);
-        String reportName="https://storage.googleapis.com/"+bucketName+"/" + executionName + ".txt";
+            executionName = reportNameReader.getProperty("reportName");
+            String reportName = "https://storage.googleapis.com/" + bucketName + "/" + executionName + ".txt";
+            mongoTransfer();
         }
     }
     public static String findFileInDirectory(Path directory, String fileExtension) throws IOException {
-        System.out.println("file directory");
-    final String[] foundFile = {null};
+        final String[] foundFile = {null};
 
-    try {
-        Files.walkFileTree(directory, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+        Files.walkFileTree(directory, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new java.nio.file.SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 if (file.getFileName().toString().endsWith(fileExtension)) {
@@ -53,12 +41,8 @@ public class compileExceptionsUploader {
                 return FileVisitResult.CONTINUE;
             }
         });
-    } catch (IOException e) {
-        // Handle the IOException (e.g., print an error message)
-        e.printStackTrace();
-    }
 
-    return foundFile[0];
+        return foundFile[0];
     }
     public static String readClassFileAsString(String filePath) throws IOException {
         //Reading user-updated code
@@ -73,15 +57,7 @@ public class compileExceptionsUploader {
 
         return content.toString();
     }
-  public static String token() throws IOException {
-        String serviceAccountKeyPath = "./g-code-editor-417ccbad5803.json";
-       GoogleCredentials credentials = ServiceAccountCredentials.fromStream(new FileInputStream(serviceAccountKeyPath))
-                .createScoped("https://www.googleapis.com/auth/cloud-platform");
-        AccessToken accessToken = credentials.refreshAccessToken();
-        String token = accessToken.getTokenValue();
-        System.out.println("Access Token: " + token);
-        return token;
-    }
+
     public static void mongoTransfer() throws IOException {
         //uploading bucket report link and user-updated code to db
         System.out.println("in mongo upload function");
