@@ -64,7 +64,7 @@ public class compileExceptionsUploader {
         String userId = executionName.split("_")[1];
         // String url = "http://g-codeeditor.el.r.appspot.com/editor?name=" + userId;
         String url="1702880311";
-        String javaPath = "./src/main/java/App.java";
+        String javaPath = "./seleniumExecution/src/main/java/App.java";
         String compileTxtPath="./test-output/" + executionName + ".txt";
         String classContent = readClassFileAsString(javaPath);
         String compileError_content = readClassFileAsString(compileTxtPath);
