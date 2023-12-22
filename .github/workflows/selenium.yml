@@ -3,7 +3,7 @@ name: Run Selenium Tests
 on:
   push:
     branches:
-      - main  # Change this to your default branch if different
+      - demo3  # Change this to your default branch if different
     paths:
       - 'seleniumExecution/src/main/java/App.java'
 
