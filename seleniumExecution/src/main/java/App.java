@@ -23,7 +23,7 @@ public class App extends driverConfig {
         WebElement title = driver.findElement(By.xpath("(//h3[text()='Selenium'])[1]"));
         String fetchedTitle = title.getText();
         System.out.println(fetchedTitle + " start2");
-        if ("Selenium TEST".equals(fetchedTitle)) {
+        if ("Selenium TEST".equals(fetchedTitle));{
             extentTest.log(Status.PASS, "text matched successfully.", captureScreenshot());
         } else {
             extentTest.log(Status.FAIL, "Failed to match text.", captureScreenshot());
